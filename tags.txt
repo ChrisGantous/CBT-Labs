@@ -1,0 +1,73 @@
+#####------------->See tags for a RESOURCE GROUP#####
+
+#PowerShell*
+
+(Get-AzResourceGroup -Name examplegroup).Tags
+
+#Azure CLI*
+
+az group show -n examplegroup --query tags
+
+#####------------->See tags for a RESOURCE#####
+
+#PowerShell*
+
+(Get-AzResource -ResourceName examplevnet -ResourceGroupName examplegroup).Tags
+
+#Azure CLI*
+
+az resource show -n examplevnet -g examplegroup --resource-type "Microsoft.Network/virtualNetworks" --query tags
+
+#####------------->ADD tags to a clean slate (No tags exist on the resource group)##### 
+
+#This is adding tags to a resource group ONLY! The resources in the resource group WILL NOT inherit the tags.
+
+#POWERSHELL*
+
+Set-AzResourceGroup -Name examplegroup -Tag @{ costcenter="1987"; ManagedBy="Bob" }
+
+#Azure CLI*
+
+az group update -n examplegroup --set tags.costcenter=1987 tags.ManagedBy=Bob
+
+#####------------->Add tags WHERE TAGS ALREADY EXIST#####
+
+#PowerShell*
+
+$tags = (Get-AzResourceGroup -Name examplegroup).Tags
+$tags.Add("Status", "Approved")
+Set-AzResourceGroup -Tag $tags -Name examplegroup
+
+#Azure CLI*
+
+jsonrtag=$(az resource show -g examplegroup -n examplevnet --resource-type "Microsoft.Network/virtualNetworks" --query tags)
+rt=$(echo $jsonrtag | tr -d '"{},' | sed 's/: /=/g')
+az resource tag --tags $rt Project=Redesign -g examplegroup -n examplevnet --resource-type "Microsoft.Network/virtualNetworks"
+
+#####------------->Add tags to a single resource ---where no tags exist----#####
+
+#PowerShell*
+
+$r = Get-AzResource -ResourceName examplevnet -ResourceGroupName examplegroup
+Set-AzResource -Tag @{ Dept="IT"; Environment="Test" } -ResourceId $r.ResourceId -Force
+
+#Azure CLI*
+
+az resource tag --tags Dept=IT Environment=Test -g examplegroup -n examplevnet --resource-type "Microsoft.Network/virtualNetworks"
+
+#####------------->Add tags to a single resource ---EXISTING TAGS----#####
+
+#PowerShell*
+
+$r = Get-AzResource -ResourceName examplevnet -ResourceGroupName examplegroup
+$r.Tags.Add("Status", "Approved")
+Set-AzResource -Tag $r.Tags -ResourceId $r.ResourceId -Force
+
+#Azure CLI*
+
+jsonrtag=$(az resource show -g examplegroup -n examplevnet --resource-type "Microsoft.Network/virtualNetworks" --query tags)
+rt=$(echo $jsonrtag | tr -d '"{},' | sed 's/: /=/g')
+az resource tag --tags $rt Project=Redesign -g examplegroup -n examplevnet --resource-type "Microsoft.Network/virtualNetworks"
+
+
+#####Additional HELP----> https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags

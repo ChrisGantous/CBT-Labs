@@ -1,0 +1,14 @@
+#Register the resource provider
+register-azresourceprovider -providernamespace 'Microsoft.PolicyInsights'
+
+# Create the Policy Definition (Subscription scope)
+$definition = New-AzPolicyDefinition -Name 'you-need-tags' -DisplayName 'Tags on Tags' -description 'We are making you use tags. Looking at you Bob.' -Policy 'https://raw.githubusercontent.com/theNetworkChuck/az103/master/taggggs.json' -mode indexed -parameter 'https://raw.githubusercontent.com/theNetworkChuck/az103/master/tagggsparams.json'
+
+# Set the scope to a resource group; may also be a resource, subscription, or management group
+$scope = '/subscriptions/' + (get-azsubscription).id
+
+# Set the Policy Parameter (JSON format)
+$policyParam = '{ "tagName": { "value": "costcenter" } }'
+
+# Create the Policy Assignment
+$assignment = New-AzPolicyAssignment -Name 'Bob assignment' -Scope $scope -PolicyDefinition $definition -PolicyParameter $policyParam 
