@@ -1,2 +1,2 @@
-# Lab 1
-In lab one I used what I learned to set tags using the GUI and PowerShell.
+# Lab 2
+In lab two I used what I learned to configure Diagnostics, Log Analytics, Queries and Alerts using the GUI and Azure CLI PowerShell.
