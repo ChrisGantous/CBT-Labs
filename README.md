@@ -1,2 +1,3 @@
-# CBT-Labs
-Files used and/or edited while doing Azure labs during CBT Azure Training
+# Lab 3
+In this lab I used the GUI and Powershell to create, lock, and move resource groups.
+Then I applied resource group tags to individual resources.
