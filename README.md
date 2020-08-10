@@ -1,2 +1,2 @@
-# CBT-Labs
-Files used and/or edited while doing Azure labs during CBT Azure Training
+# Lab 1
+In lab one I used what I learned to set tags using the GUI and PowerShell.
