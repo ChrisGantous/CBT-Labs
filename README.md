@@ -1,2 +1,2 @@
-# CBT-Labs
-Files used and/or edited while doing Azure labs during CBT Azure Training
+# Vnet Practice
+Created a Vnet with 3 Subnets and created a Route Table
