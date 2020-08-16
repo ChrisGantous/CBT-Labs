@@ -1,2 +1,2 @@
 # Lab 1
-In lab one I used what I learned to set tags using the GUI and PowerShell.
+In this lab set tags using both the GUI and PowerShell.
